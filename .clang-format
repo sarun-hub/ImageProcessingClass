@@ -25,7 +25,7 @@ AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
 
 # Line wrapping behavior
-ColumnLimit: 0   # disable automatic wrapping (important for your style)
+ColumnLimit: 80   # disable automatic wrapping (important for your style)
 
 # Function formatting
 AlwaysBreakAfterReturnType: None
