@@ -1,0 +1,46 @@
+BasedOnStyle: LLVM
+
+# Indentation
+UseTab: Always
+IndentWidth: 4
+TabWidth: 4
+
+# Brace style (same line, like your code)
+BreakBeforeBraces: Attach
+
+# Control specific brace wrapping (keep everything attached)
+BraceWrapping:
+  AfterFunction: false
+  AfterControlStatement: false
+  AfterClass: false
+  AfterStruct: false
+  AfterEnum: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+# Keep short things on one line when possible
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+
+# Line wrapping behavior
+ColumnLimit: 0   # disable automatic wrapping (important for your style)
+
+# Function formatting
+AlwaysBreakAfterReturnType: None
+AlwaysBreakAfterDefinitionReturnType: None
+
+# Spaces and readability
+SpaceBeforeParens: ControlStatements   # if (...) but func(...)
+SpacesInParentheses: false
+
+# Keep simple formatting compact
+BinPackArguments: true
+BinPackParameters: true
+
+# Pointer style (optional, based on your taste)
+PointerAlignment: Left
+
+# Keep includes simple
+SortIncludes: false
