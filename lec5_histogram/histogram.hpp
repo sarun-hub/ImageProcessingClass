@@ -1,13 +1,7 @@
 #include "myImageIO.h"
 #include <variant>
 
-struct HistogramRGB {
-	int* hist_data_R;
-	int* hist_data_G;
-	int* hist_data_B;
-};
+enum HistMode { Grey = 99, Luminance = -1, Red = 0, Green = 1, Blue = 2 };
 
-int* Histogram(myImageData* img, int binsize, bool print_histogram = true);
-
-std::variant<int*, HistogramRGB> Histogram_color(myImageData* img, int binsize,
-												 bool luminance_only = true);
+int* Histogram(myImageData* img, int binsize, HistMode mode = HistMode::Grey,
+			   bool print_histogram = true);

@@ -2,7 +2,7 @@
 #include "histogram.hpp"
 #include <stdexcept>
 
-enum class HistMode { Grey, Color_Luminance, Color_Distorted };
+enum class ColorMode { Distorted, Luminance };
 
 int* map_table(const int* hist_data, const int total_pixel) {
 
@@ -23,7 +23,7 @@ int* map_table(const int* hist_data, const int total_pixel) {
 }
 
 void histogram_equalization(myImageData* img1, myImageData* img2,
-							const HistMode mode = HistMode::Color_Luminance) {
+							ColorMode color_mode = ColorMode::Luminance) {
 
 	// get size
 	int W = img1->getWidth();
@@ -35,7 +35,7 @@ void histogram_equalization(myImageData* img1, myImageData* img2,
 
 	int* hist;
 	if (CH == 1) {
-		hist = Histogram(img1, 1, false);
+		hist = Histogram(img1, 1, HistMode::Grey, false);
 
 		const auto table = map_table(hist, total_pixel);
 
@@ -48,8 +48,8 @@ void histogram_equalization(myImageData* img1, myImageData* img2,
 		}
 		delete[] table;
 		return;
-	} else if (CH == 3 && mode == HistMode::Color_Luminance) {
-		hist = std::get<int*>(Histogram_color(img1, 1, true));
+	} else if (CH == 3 && color_mode == ColorMode::Luminance) {
+		hist = Histogram(img1, 1, HistMode::Luminance, false);
 		const auto table = map_table(hist, total_pixel);
 
 		// apply to the output img
@@ -67,12 +67,11 @@ void histogram_equalization(myImageData* img1, myImageData* img2,
 		}
 		delete[] table;
 		return;
-	} else if (CH == 3 && mode == HistMode::Color_Distorted) {
-		const auto hist_rgb =
-			std::get<HistogramRGB>(Histogram_color(img1, 1, false));
-		const auto hist_R = hist_rgb.hist_data_R;
-		const auto hist_G = hist_rgb.hist_data_G;
-		const auto hist_B = hist_rgb.hist_data_B;
+	} else if (CH == 3 && color_mode == ColorMode::Distorted) {
+
+		const auto hist_R = Histogram(img1, 1, HistMode::Red, false);
+		const auto hist_G = Histogram(img1, 1, HistMode::Green, false);
+		const auto hist_B = Histogram(img1, 1, HistMode::Blue, false);
 
 		const auto table_R = map_table(hist_R, total_pixel);
 		const auto table_G = map_table(hist_G, total_pixel);
@@ -115,13 +114,13 @@ int main(int argc, char** argv) {
 	myImageData* img2 = new myImageData();
 	img2->init(W, H, CH);
 
-	// histogram_equalization(img1, img2, HistMode::Grey);
-	// img2->save("histogram_equalizer");
+	histogram_equalization(img1, img2);
+	img2->save("histogram_equalizer");
 
-	histogram_equalization(img1, img2, HistMode::Color_Luminance);
-	img2->save("histogram_equalizer_color");
-	histogram_equalization(img1, img2, HistMode::Color_Distorted);
-	img2->save("histogram_equalizer_color_distorted");
+	// histogram_equalization(img1, img2, ColorMode::Luminance);
+	// img2->save("histogram_equalizer_color");
+	// histogram_equalization(img1, img2, ColorMode::Distorted);
+	// img2->save("histogram_equalizer_color_distorted");
 
 	delete img1;
 	delete img2;
