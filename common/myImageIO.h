@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -85,7 +87,7 @@ public:
 };
 
 
-void myImageData::read(const char *filename){
+inline void myImageData::read(const char *filename){
 	
 	FILE *file = fopen(filename, "rb");
 	if(file == NULL){
@@ -153,7 +155,7 @@ void myImageData::read(const char *filename){
 	
 }
 
-void myImageData::save(const char *filename){
+inline void myImageData::save(const char *filename){
 	
 	char filenamefull[256];
 	if(this->mCH == 1){
