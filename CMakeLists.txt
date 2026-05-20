@@ -7,4 +7,6 @@ add_subdirectory(lec2_hello_world)
 
 add_subdirectory(lec3_filtering)
 
+add_subdirectory(lec4_binarization)
+
 add_subdirectory(lec5_histogram)    

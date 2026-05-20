@@ -1,0 +1,3 @@
+add_executable(binarization_main binarization_main.cpp)
+
+target_link_libraries(binarization_main PRIVATE imageIO)
