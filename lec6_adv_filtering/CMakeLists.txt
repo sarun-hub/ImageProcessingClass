@@ -1,0 +1,3 @@
+add_executable(adv_filtering_main adv_filtering_main.cpp)
+
+target_link_libraries(adv_filtering_main PRIVATE imageIO )

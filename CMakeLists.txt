@@ -9,4 +9,6 @@ add_subdirectory(lec3_filtering)
 
 add_subdirectory(lec4_binarization)
 
-add_subdirectory(lec5_histogram)    
+add_subdirectory(lec5_histogram)   
+
+add_subdirectory(lec6_adv_filtering)    
