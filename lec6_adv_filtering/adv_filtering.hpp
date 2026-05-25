@@ -7,7 +7,7 @@
 
 template <typename T> using vec2d = std::vector<std::vector<T>>;
 
-vec2d<double> gaussian_kernel(int kernel_size, double sigma,
+vec2d<double> gaussian_kernel(int kernel_size, double sigma_square,
 							  bool normalize = true) {
 	// initialize kernel
 	vec2d<double> kernel(kernel_size, std::vector<double>(kernel_size));
@@ -19,7 +19,7 @@ vec2d<double> gaussian_kernel(int kernel_size, double sigma,
 			const auto dy = ky - center;
 
 			const auto value =
-				std::exp(-(dx * dx + dy * dy) / (2.0 * sigma * sigma));
+				std::exp(-(dx * dx + dy * dy) / (2.0 * sigma_square));
 			kernel[ky][kx] = value;
 			sum += value;
 		}
@@ -66,12 +66,12 @@ void apply_kernel(myImageData* img1, myImageData* img2,
 }
 
 void apply_kernel_with_range_weight(myImageData* img1, myImageData* img2,
-									int kernel_size, double sigma_s,
-									double sigma_r) {
+									int kernel_size, double sigma_square_s,
+									double sigma_square_r) {
 	const auto H = img1->getHeight();
 	const auto W = img1->getWidth();
 	// get Gaussian Kernel
-	const auto kernel = gaussian_kernel(kernel_size, sigma_s, false);
+	const auto kernel = gaussian_kernel(kernel_size, sigma_square_s, false);
 
 	const int kernel_size_half = kernel.size() / 2;
 	for (int y = 0; y < H; y++) {
@@ -96,9 +96,8 @@ void apply_kernel_with_range_weight(myImageData* img1, myImageData* img2,
 						(double)neighbor - (double)center;
 
 					// range weight
-					const auto range_weight =
-						std::exp(-(intensity_diff * intensity_diff) /
-								 (2.0 * sigma_r * sigma_r));
+					const auto range_weight = std::exp(
+						-(intensity_diff * intensity_diff) / (2.0 * sigma_square_r));
 
 					const auto weight = spatial_weight * range_weight;
 					// apply weight
