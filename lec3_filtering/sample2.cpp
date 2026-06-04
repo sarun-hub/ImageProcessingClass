@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include "myImageIO.h"
 #include <vector>
+#include <string>
 #include <iostream>
 
 template <typename T> using vec2d = std::vector<std::vector<T>>;
 
-void mean_filter(myImageData* in, myImageData* out) {
+void mean_filter(myImageData* in, myImageData* out, const int winsize = 1) {
 
 	int W = in->getWidth();
 	int H = in->getHeight();
 	int C = in->getCH(); // not used
-	const int winsize = 1;
 
 	for (int y = 0; y < H; y++) {
 		for (int x = 0; x < W; x++) {
@@ -153,12 +153,13 @@ int main(int argc, char** argv) {
 		vec2d<double> mean_kernel = {{1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0},
 									 {1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0},
 									 {1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0}};
-		mean_filter(img1, img2);
+		const int winsize = 1;
+		mean_filter(img1, img2, winsize);
 		// save
-		img2->save("result_mean_filter");
+		std::string save_name = "result_mean_filter_"  + std::to_string(winsize);
+		img2->save(save_name.c_str());
 
 		filter_with_kernel(img1, img2, mean_kernel);
-		std::cout << mean_kernel[0][0] << std::endl;
 		img2->save("result_mean_kernel");
 
 		// enhancement
