@@ -18,14 +18,16 @@ int main(int argc, char** argv) {
 	img2->init(W, H, CH);
 
 	// processing
+	const double threshold = 128;
+	simple_thresholding(img1, img2, threshold);
+	const std::string save_filename_simple_thresholding =
+		CH == 3 ? "simple_thresholding_color" + std::to_string(threshold)
+				: "simple_thresholding" + std::to_string(threshold);
+	img2->save(save_filename_simple_thresholding.c_str());
 
-	simple_thresholding(img1, img2, 122.5);
-	const char* save_filename_simple_thresholding =
-		CH == 3 ? "simple_thresholding_color" : "simple_thresholding";
-	img2->save(save_filename_simple_thresholding);
-
-	error_diffusion(img1, img2, 122.5);
-	const char* save_filename_error_diffusion =
-		CH == 3 ? "error_diffusion_color" : "error_diffusion";
-	img2->save(save_filename_error_diffusion);
+	error_diffusion(img1, img2, threshold);
+	const std::string save_filename_error_diffusion =
+		CH == 3 ? "error_diffusion_color" + std::to_string(threshold)
+				: "error_diffusion" + std::to_string(threshold);
+	img2->save(save_filename_error_diffusion.c_str());
 }
